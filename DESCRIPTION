@@ -1,0 +1,14 @@
+Package: basecamper
+Type: Package
+Title: Basecamp Classic API
+Version: 0.1.0
+Authors@R: person(given = "Jonathan", family = "Sidi", role = c("cre","aut"), email =
+          "yonis@metrumrg.com")
+Description: Work with Basecamp Classic API to query projects and attachments in Basecamp.
+  Additional download files from basecamp and unzip large files with package utilities.
+Depends: R (>= 3.5.0)
+Imports: xml2,glue,utils,tibble,fs
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
