@@ -32,7 +32,7 @@ What you can do with this package:
   
 ## Installation
 
-To use this package clone reop and install locally
+To use this package clone the repository and install locally
 
 ## Example
 
