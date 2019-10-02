@@ -2,36 +2,20 @@
 % Please edit documentation in R/download.R
 \name{basecamp_download}
 \alias{basecamp_download}
-\title{FUNCTION_TITLE}
+\title{Download file from Basecamp}
 \usage{
 basecamp_download(url, destdir = getwd(), destfile = basename(url),
   token = Sys.getenv("BASECAMP_TOKEN"))
 }
 \arguments{
-\item{url}{PARAM_DESCRIPTION}
+\item{url}{character, URL location of the file}
 
-\item{destdir}{PARAM_DESCRIPTION, Default: getwd()}
+\item{destdir}{character, directory to save the file on local disk, Default: getwd()}
 
-\item{destfile}{PARAM_DESCRIPTION, Default: basename(url)}
+\item{destfile}{character, name of file to save on local disk, Default: basename(url)}
 
-\item{token}{PARAM_DESCRIPTION, Default: Sys.getenv("BASECAMP_TOKEN")}
-}
-\value{
-OUTPUT_DESCRIPTION
+\item{token}{character, Basecamp Classic API token , Default: Sys.getenv("BASECAMP_TOKEN")}
 }
 \description{
-FUNCTION_DESCRIPTION
-}
-\details{
-DETAILS
-}
-\examples{
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
-}
-}
-\seealso{
-\code{\link[glue]{glue}}
+Download a file from Basecamp Classic
 }

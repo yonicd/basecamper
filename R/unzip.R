@@ -1,21 +1,15 @@
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param directory PARAM_DESCRIPTION
-#' @param file PARAM_DESCRIPTION
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
+#' @title Unzip large files
+#' @description CLI call to unzip that is more robust for large files, which
+#'   are truncated by \code{\link[utils]{unzip}} if larger than 4gb.
+#' @param directory character, path of directory to unzip the file
+#' @param file character, local path of the file to unzip.
+#' @return NULL
 #' @seealso
-#'  \code{\link[utils]{head}}
+#'  \code{\link[utils]{unzip}}
 #' @rdname unzip2
 #' @export
 #' @importFrom utils tail
-#https://stackoverflow.com/a/42743886
+# https://stackoverflow.com/a/42743886
 unzip2 <- function(directory, file) {
 
     # Set working directory for decompression

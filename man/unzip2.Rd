@@ -2,31 +2,19 @@
 % Please edit documentation in R/unzip.R
 \name{unzip2}
 \alias{unzip2}
-\title{FUNCTION_TITLE}
+\title{Unzip large files}
 \usage{
 unzip2(directory, file)
 }
 \arguments{
-\item{directory}{PARAM_DESCRIPTION}
+\item{directory}{character, path of directory to unzip the file}
 
-\item{file}{PARAM_DESCRIPTION}
-}
-\value{
-OUTPUT_DESCRIPTION
+\item{file}{character, local path of the file to unzip.}
 }
 \description{
-FUNCTION_DESCRIPTION
-}
-\details{
-DETAILS
-}
-\examples{
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
-}
+CLI call to unzip that is more robust for large files, which
+  are truncated by \code{\link[utils]{unzip}} if larger than 4gb.
 }
 \seealso{
-\code{\link[utils]{head}}
+\code{\link[utils]{unzip}}
 }

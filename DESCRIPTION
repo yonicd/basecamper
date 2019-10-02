@@ -8,6 +8,8 @@ Description: Work with Basecamp Classic API to query projects and attachments in
   Additional download files from basecamp and unzip large files with package utilities.
 Depends: R (>= 3.5.0)
 Imports: xml2,glue,utils,tibble,fs
+URL: https://ghe.metrumrg.com/yoni/basecamper
+BugReports: https://ghe.metrumrg.com/yoni/basecamper/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

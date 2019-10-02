@@ -1,6 +1,6 @@
 #' @export
 #' @importFrom xml2 xml_text xml_find_all
-print.basecamp_attachment <- function(x,...){
+print.basecamp_attachments <- function(x,...){
 
   print(xml2::xml_text(xml2::xml_find_all(x,'.//attachment/name')))
 
@@ -44,7 +44,7 @@ print.basecamp_project <- function(x,...){
 #' @importFrom tibble tibble
 #' @importFrom xml2 xml_text xml_find_all
 #' @importFrom fs as_fs_bytes
-summary.basecamp_attachment <- function(object,...){
+summary.basecamp_attachments <- function(object,...){
 
   tibble::tibble(
     filename = xml2::xml_text(xml2::xml_find_all(object,'.//attachment/name')),

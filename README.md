@@ -154,7 +154,7 @@ print(project)
 ### Attachments
 
 ``` r
-attachments <- basecamper::basecamp_attachment(TAKEDA_IQVA)
+attachments <- basecamper::basecamp_attachments(TAKEDA_IQVA)
 ```
 
 #### Attachments methods

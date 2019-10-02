@@ -1,19 +1,10 @@
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param url PARAM_DESCRIPTION
-#' @param destdir PARAM_DESCRIPTION, Default: getwd()
-#' @param destfile PARAM_DESCRIPTION, Default: basename(url)
-#' @param token PARAM_DESCRIPTION, Default: Sys.getenv("BASECAMP_TOKEN")
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @seealso
-#'  \code{\link[glue]{glue}}
+#' @title Download file from Basecamp
+#' @description Download a file from Basecamp Classic
+#' @param url character, URL location of the file
+#' @param destdir character, directory to save the file on local disk, Default: getwd()
+#' @param destfile character, name of file to save on local disk, Default: basename(url)
+#' @param token character, Basecamp Classic API token , Default: Sys.getenv("BASECAMP_TOKEN")
+#' @return NULL
 #' @rdname basecamp_download
 #' @export
 #' @importFrom glue glue
