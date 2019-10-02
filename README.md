@@ -14,12 +14,12 @@ with Basecamp directly from R.
 
 What you can do with this package:
 
-  - Query
-      - Projects you have privileges to
-      - Specific project information
-      - Attachments in a project
-  - Download attached files in a project
-  - Unzip large files (`>4gb`)
+  - [Query](#queries)
+      - [Projects](#projects) you have privileges to
+      - [Project](#project) specific information
+      - [Attachments](#attachments) in a project
+  - [Download](#download-file) attached files in a project
+  - [Unzip](#unzip) large files (`>4gb`)
 
 ## Installation
 
@@ -223,7 +223,7 @@ list.files(td,pattern = '.zip$')
 ## Unzip
 
 `basecamper::unzip2` runs unzip from CLI which is more robust for files
-larger than `4gb` which are truncated by `utils::zip`
+larger than `4gb` which are truncated by `utils::unzip`
 
 ``` r
 
