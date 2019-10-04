@@ -1,5 +1,130 @@
 #' @export
 #' @importFrom xml2 xml_text xml_find_all
+print.basecamp_account <- function(x,...){
+
+  name <- xml2::xml_text(xml2::xml_child(x,'.//name'))
+  holder_id <- xml2::xml_text(xml2::xml_child(x,'.//account-holder-id'))
+
+  print(glue::glue(
+    '{name}','Account Holder ID: {holder_id}',.sep = '\n'
+    )
+  )
+
+}
+
+#' @export
+print.basecamp_person_me <- function(x,...){
+
+ class(x)[1] <- 'basecamp_person'
+ print(x)
+
+}
+
+#' @export
+print.basecamp_person_person <- function(x,...){
+
+  class(x)[1] <- 'basecamp_person'
+  print(x)
+
+}
+
+#' @export
+#' @importFrom xml2 xml_child
+#' @importFrom glue glue
+print.basecamp_person_project <- function(x,...){
+
+  for( i in seq_len(xml2::xml_length(x)) ){
+
+    print(
+      structure(
+      xml2::xml_child(x,glue::glue('.//person[{i}]')),
+      class = c("basecamp_person","xml_document","xml_node")
+    )
+    )
+
+  }
+
+}
+
+
+#' @export
+#' @importFrom xml2 xml_child
+#' @importFrom glue glue
+print.basecamp_person_company <- function(x,...){
+
+  for( i in seq_len(xml2::xml_length(x)) ){
+
+    print(
+      structure(
+        xml2::xml_child(x,glue::glue('.//person[{i}]')),
+        class = c(glue::glue("basecamp_person"),"xml_document","xml_node")
+      )
+    )
+
+  }
+
+}
+
+#' @export
+#' @importFrom xml2 xml_text xml_find_all
+#' @importFrom glue glue
+print.basecamp_person <- function(x,...){
+
+  person_id <- xml2::xml_text(xml2::xml_child(x,'.//id'))
+  person_title <- xml2::xml_text(xml2::xml_child(x,'.//title'))
+
+  person_name <- xml2::xml_text(xml2::xml_child(x,'.//user-name'))
+  first_name <- xml2::xml_text(xml2::xml_child(x,'.//first-name'))
+  last_name <- xml2::xml_text(xml2::xml_child(x,'.//last-name'))
+
+  print(glue::glue(
+    '{first_name} {last_name} {person_title}',
+    'User Name: {person_name}',
+    'User ID: {person_id}',
+    '\n',
+    .sep = '\n'
+  )
+  )
+
+}
+
+#' @export
+#' @importFrom xml2 xml_child
+#' @importFrom glue glue
+print.basecamp_companies <- function(x,...){
+
+  for( i in seq_len(xml2::xml_length(x)) ){
+
+    print(
+      structure(
+        xml2::xml_child(x,glue::glue('.//company[{i}]')),
+        class = c(glue::glue("basecamp_company"),"xml_document","xml_node")
+      )
+    )
+
+  }
+
+}
+
+#' @export
+#' @importFrom xml2 xml_text xml_find_all
+#' @importFrom glue glue
+print.basecamp_company <- function(x,...){
+
+  company_id <- xml2::xml_text(xml2::xml_child(x,'.//id'))
+  company_name <- xml2::xml_text(xml2::xml_child(x,'.//name'))
+
+  print(glue::glue(
+    '{company_name} (ID: {company_id})',
+    '\n',
+    .sep = '\n'
+  )
+  )
+
+}
+
+#' @export
+#' @importFrom xml2 xml_text xml_find_all
 print.basecamp_attachments <- function(x,...){
 
   print(xml2::xml_text(xml2::xml_find_all(x,'.//attachment/name')))
@@ -41,6 +166,50 @@ print.basecamp_project <- function(x,...){
 }
 
 #' @export
+#' @importFrom xml2 xml_child
+#' @importFrom glue glue
+print.basecamp_category_project <- function(x,...){
+
+  for( i in seq_len(xml2::xml_length(x)) ){
+
+    print(
+      structure(
+        xml2::xml_child(x,glue::glue('.//category[{i}]')),
+        class = c(glue::glue("basecamp_category"),"xml_document","xml_node")
+      )
+    )
+
+  }
+
+}
+
+#' @export
+#' @importFrom xml2 xml_child
+#' @importFrom glue glue
+print.basecamp_category <- function(x,...){
+
+project <- xml2::xml_text(xml2::xml_child(x,'./project-id'))
+count <- xml2::xml_text(xml2::xml_child(x,'./elements-count'))
+name <- xml2::xml_text(xml2::xml_child(x,'./name'))
+type <- xml2::xml_text(xml2::xml_child(x,'./type'))
+
+if(count>0){
+
+  print(glue::glue('Project: {project}',
+                   'Type: {type}',
+                   'Name: {name}',
+                   'Count: {count}',
+                   '\n',
+                   .sep = '\n'))
+
+}
+
+
+
+}
+
+
+#' @export
 #' @importFrom tibble tibble
 #' @importFrom xml2 xml_text xml_find_all
 #' @importFrom fs as_fs_bytes
@@ -64,6 +233,33 @@ summary.basecamp_projects <- function(object,...){
     company  = xml2::xml_text(xml2::xml_find_all(object,'.//project/company/name')),
     id = xml2::xml_text(xml2::xml_find_all(object,'.//project/id')),
     name = xml2::xml_text(xml2::xml_find_all(object,'.//project/name'))
+  )
+
+}
+
+#' @export
+#' @importFrom xml2 xml_child
+#' @importFrom glue glue
+summary.basecamp_companies <- function(object,...){
+
+  tibble::tibble(
+    name = trimws(xml2::xml_text(xml2::xml_find_all(object,'.//name'))),
+    id = xml2::xml_text(xml2::xml_find_all(object,'.//id'))
+  )
+
+
+}
+
+#' @export
+#' @importFrom xml2 xml_child
+#' @importFrom glue glue
+summary.basecamp_category_project <- function(object,...){
+
+  tibble::tibble(
+    project = xml2::xml_text(xml2::xml_find_all(object,'./category/project-id')),
+    count   = xml2::xml_text(xml2::xml_find_all(object,'./category/elements-count')),
+    name    = xml2::xml_text(xml2::xml_find_all(object,'./category/name')),
+    type    = xml2::xml_text(xml2::xml_find_all(object,'./category/type')),
   )
 
 }

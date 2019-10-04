@@ -16,6 +16,9 @@ basecamp_download(url, destdir = getwd(), destfile = basename(url),
 
 \item{token}{character, Basecamp Classic API token , Default: Sys.getenv("BASECAMP_TOKEN")}
 }
+\value{
+a resoponse object
+}
 \description{
 Download a file from Basecamp Classic
 }
