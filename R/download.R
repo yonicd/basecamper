@@ -4,7 +4,7 @@
 #' @param destdir character, directory to save the file on local disk, Default: getwd()
 #' @param destfile character, name of file to save on local disk, Default: basename(url)
 #' @param token character, Basecamp Classic API token , Default: Sys.getenv("BASECAMP_TOKEN")
-#' @return a resoponse object
+#' @return numeric value of the http code
 #' @rdname basecamp_download
 #' @export
 #' @importFrom glue glue
@@ -16,18 +16,11 @@ basecamp_download <- function(url,
 
   path <- file.path(destdir,fix_filename(destfile))
 
-  system(glue::glue('curl -u {token}:X -L --output {path} {url}'))
+  tf <- tempfile()
 
-  # res <- httr::GET(
-  #   url = url,
-  #   httr::authenticate(token, 'X'),
-  #   httr::progress(),
-  #   httr::write_disk(path = path, overwrite = overwrite)
-  # )
-  #
-  # httr::stop_for_status(res)
-  #
-  # res
+  res <- system(glue::glue('curl -u {token}:X -w "%{{http_code}}" -# -L --output {path} {url}'),intern = TRUE)
+
+  return(invisible(res))
 
 }
 
@@ -35,3 +28,5 @@ basecamp_download <- function(url,
 fix_filename <- function(x){
   gsub('\\s','_',utils::URLdecode(x))
 }
+
+
