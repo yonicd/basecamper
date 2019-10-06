@@ -57,6 +57,14 @@ Sys.setenv(BASECAMP_HOST  = 'https://metrumresearchgroup.basecamphq.com')
 
 ## Queries
 
+### Whoami
+
+Lets just check that the token and host are set right and get back your account info
+
+```{r}
+basecamper::whoami()
+```
+
 ### Projects
 
 ```{r}
@@ -115,6 +123,8 @@ basecamp_download(file_url,destdir = td)
 
 list.files(td,pattern = '.zip$')
 
+fs::as_fs_bytes(file.info(list.files(td,pattern = '.zip$',full.names = TRUE))[,'size'])
+
 ```
 
 ## Unzip
@@ -125,6 +135,17 @@ list.files(td,pattern = '.zip$')
 
 basecamper::unzip2(directory = td,
                    file = list.files(td,pattern = '.zip$',full.names = TRUE))
+```
 
-list.files(td,pattern = '.(pdf|xlsx)$')
+```{r}
+unzipped_files <- fs::file_info(list.files(td,
+    pattern = '.(pdf|xlsx)$',full.names = TRUE)
+    )[,c('path','size')]
+
+unzipped_files$path <- basename(unzipped_files$path)
+
+unzipped_files
+
+
+
 ```

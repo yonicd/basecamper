@@ -52,6 +52,18 @@ Sys.setenv(BASECAMP_HOST  = 'https://metrumresearchgroup.basecamphq.com')
 
 ## Queries
 
+### Whoami
+
+Lets just check that the token and host are set right and get back your
+account info
+
+``` r
+basecamper::whoami()
+#> Yoni Sidi 
+#> User Name: yonis@metrumrg.com
+#> User ID: 12149241
+```
+
 ### Projects
 
 ``` r
@@ -218,6 +230,9 @@ basecamp_download(file_url,destdir = td)
 
 list.files(td,pattern = '.zip$')
 #> [1] "MLN0002SC_3031_SDTM_specifications.zip"
+
+fs::as_fs_bytes(file.info(list.files(td,pattern = '.zip$',full.names = TRUE))[,'size'])
+#> 4.2M
 ```
 
 ## Unzip
@@ -230,8 +245,19 @@ larger than `4gb` which are truncated by `utils::unzip`
 basecamper::unzip2(directory = td,
                    file = list.files(td,pattern = '.zip$',full.names = TRUE))
 #> Success!
+```
 
-list.files(td,pattern = '.(pdf|xlsx)$')
-#> [1] "MLN0002-3031_SDTM_Specifications_V2.xlsx"
-#> [2] "MLN0002SC-3031_SDTM_aCRF_V4.8.pdf"
+``` r
+unzipped_files <- fs::file_info(list.files(td,
+    pattern = '.(pdf|xlsx)$',full.names = TRUE)
+    )[,c('path','size')]
+
+unzipped_files$path <- basename(unzipped_files$path)
+
+unzipped_files
+#> # A tibble: 2 x 2
+#>   path                                            size
+#>   <chr>                                    <fs::bytes>
+#> 1 MLN0002-3031_SDTM_Specifications_V2.xlsx       2.06M
+#> 2 MLN0002SC-3031_SDTM_aCRF_V4.8.pdf               3.4M
 ```

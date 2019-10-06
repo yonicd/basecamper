@@ -176,64 +176,6 @@ basecamp_messages <- function(scope = c('message','project'),
 }
 
 #' @importFrom glue glue
-#' @importFrom httr GET authenticate stop_for_status headers
-#' @rdname get_api
-#' @export
-new_comment <- function(
-  body = 'Your comment',
-  scope = c('posts', 'milestones', 'todo_items'),
-  id = NULL,
-  host = Sys.getenv('BASECAMP_HOST'),
-  token = Sys.getenv('BASECAMP_TOKEN')){
-
-  if(is.null(id)) stop(glue::glue('argument id must contain a {scope} id'))
-
-  res <- httr::GET(
-    glue::glue('{host}/{scope}/{id}/comments/new.xml'),
-    httr::authenticate(token, 'X')
-  )
-
-  httr::stop_for_status(res)
-
-  res_xml <- httr::content(res)
-  xml2::xml_text(res_xml) <- 'my comment'
-
-  POST_URL <- glue::glue(
-    "{host}","{gsub('^POST ','',httr::headers(res)[['x-create-action']])}"
-  )
-
-  structure(res_xml, POST_URL = POST_URL)
-
-}
-
-#' @importFrom glue glue
-#' @importFrom httr GET authenticate stop_for_status headers
-#' @rdname get_api
-#' @export
-edit_comment <- function(
-  host = Sys.getenv('BASECAMP_HOST'),
-  token = Sys.getenv('BASECAMP_TOKEN')){
-
-  if(is.null(id)) stop(glue::glue('argument id must contain a comment id'))
-
-  res <- httr::GET(
-    glue::glue('{host}/comments/{id}/edit.xml'),
-    httr::authenticate(token, 'X')
-  )
-
-  httr::stop_for_status(res)
-
-  res_xml <- httr::content(res)
-
-  POST_URL <- glue::glue(
-    "{host}","{gsub('^POST ','',httr::headers(res)[['x-update-action']])}"
-  )
-
-  structure(res_xml, POST_URL = POST_URL)
-
-}
-
-#' @importFrom glue glue
 #' @importFrom httr GET authenticate stop_for_status content
 get_query <- function(query, template, token = Sys.getenv('BASECAMP_TOKEN')){
 
