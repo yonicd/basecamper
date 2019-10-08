@@ -53,21 +53,6 @@ basecamp_project <- function(id,
 #' @importFrom glue glue
 #' @rdname get_api
 #' @export
-basecamp_attachments <- function(id,
-                                host = Sys.getenv('BASECAMP_HOST'),
-                                token = Sys.getenv('BASECAMP_TOKEN')){
-
-  get_query(
-    query    = glue::glue('{host}/projects/{id}/attachments.xml'),
-    token    = token,
-    template = 'attachments'
-  )
-
-}
-
-#' @importFrom glue glue
-#' @rdname get_api
-#' @export
 basecamp_account <- function(host = Sys.getenv('BASECAMP_HOST'),
                              token = Sys.getenv('BASECAMP_TOKEN')){
 
@@ -107,26 +92,40 @@ basecamp_companies <- function(scope = c('companies','project','company'),
 #' @rdname get_api
 #' @export
 basecamp_people <- function(
-  scope = c('me','person','project','company'),
+  scope = c('person', 'project', 'company', 'me', 'people'),
   id = NULL,
   host = Sys.getenv('BASECAMP_HOST'),
   token = Sys.getenv('BASECAMP_TOKEN')){
 
-  if(is.null(id)&scope!='me') stop(glue::glue('argument id must contain a {scope} id'))
+  if(is.null(id)&!scope%in%c('me','people')){
+
+    stop(glue::glue('argument id must contain a {scope} id'))
+
+  }
 
   query <- switch(scope,
-                  'me' = glue::glue('{host}/me.xml'),
-                  'person' = glue::glue('{host}/people/{id}.xml'),
-                  'project' = glue::glue('{host}/projects/{id}/people.xml'),
-                  'company' = glue::glue('{host}/companies/{id}/people.xml')
+                  'me'       = glue::glue('{host}/me.xml'),
+                  'person'   = glue::glue('{host}/people/{id}.xml'),
+                  'project'  = glue::glue('{host}/projects/{id}/people.xml'),
+                  'company'  = glue::glue('{host}/companies/{id}/people.xml'),
+                  'people' = glue::glue('{host}/people.xml')
                   )
 
-  get_query(
+  if(scope=='people'&exists('people',envir = benv)){
+    return(get('people',envir = benv))
+  }
+
+  res <- get_query(
     query    = query,
     token    = token,
     template = glue::glue('person_{scope}')
   )
 
+  if(scope=='people'){
+    assign(x = 'people',res,envir = benv)
+  }
+
+  res
 }
 
 #' @importFrom glue glue
@@ -176,10 +175,14 @@ basecamp_messages <- function(scope = c('message','project'),
 }
 
 #' @importFrom glue glue
-#' @importFrom httr GET authenticate stop_for_status content
+#' @importFrom httr GET authenticate stop_for_status content progress
 get_query <- function(query, template, token = Sys.getenv('BASECAMP_TOKEN')){
 
-  res <- httr::GET( query, httr::authenticate(token, 'X'))
+  if(template%in%c('person_people','person_project')){
+    res <- httr::GET( query, httr::authenticate(token, 'X'),httr::progress())
+  }else{
+    res <- httr::GET( query, httr::authenticate(token, 'X'))
+  }
 
   httr::stop_for_status(res)
 
@@ -187,5 +190,30 @@ get_query <- function(query, template, token = Sys.getenv('BASECAMP_TOKEN')){
     httr::content(res),
     class = c(glue::glue("basecamp_{template}"),"xml_document","xml_node")
   )
+
+}
+
+benv <- new.env()
+
+#' @title Find a person
+#' @description Find a person in Basecamp
+#' @param pattern character, pattern to search for
+#' @param ... arguments to pass to grepl
+#' @return named numeric vector
+#' @details If the index of people is not loaded in the package yet, it will be
+#'  queried and stored in an internal package environment.
+#' @rdname find_person
+#' @export
+
+find_person <- function(pattern,...){
+
+  x <- summary(basecamp_people(scope = 'people'))
+
+  idx <- grepl(pattern, x$name,...)
+
+  ret <- x$id[idx]
+  names(ret) <- x$name[idx]
+
+  ret
 
 }

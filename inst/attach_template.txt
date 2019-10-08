@@ -1,0 +1,8 @@
+<attachments>
+  <name>{attachment_name}</name>
+  <file>
+    <file>{get_attach_id(res)}</file>
+    <content-type>{mime::guess_type(file)}</content-type>
+    <original-filename>{basename(file)}</original-filename>
+  </file>
+</attachments>

@@ -1,3 +1,30 @@
+#' @importFrom glue glue
+#' @importFrom httr GET authenticate stop_for_status headers
+#' @rdname get_api
+#' @export
+create_message <- function(id = NULL,
+                           host = Sys.getenv('BASECAMP_HOST'),
+                           token = Sys.getenv('BASECAMP_TOKEN')){
+
+  if(is.null(id)) stop('argument id must contain a project id')
+
+  res <- httr::GET(
+    glue::glue('{host}/projects/{id}/posts/new.xml'),
+    httr::authenticate(token, 'X')
+  )
+
+  httr::stop_for_status(res)
+
+  res_xml <- httr::content(res)
+
+  POST_URL <- glue::glue(
+    "{host}","{gsub('^POST ','',httr::headers(res)[['x-create-action']])}"
+  )
+
+  structure(res_xml, POST_URL = POST_URL)
+
+}
+
 #' @title View Messages
 #' @description FUNCTION_DESCRIPTION
 #' @param x View Message in Viewer
@@ -91,3 +118,36 @@ message_to_html <- function(x,head = 1, file = ''){
   structure(file,class = c('basecamp_message','character'))
 
 }
+
+
+#' @title Create Notification
+#' @description Create a notification node for a message object
+#' @param person Name or ID of a person in Basecamp
+#' @return character
+#' @rdname create_notify
+#' @export
+#' @importFrom glue glue
+create_notify <- function(person){
+
+  if(inherits(person,'character')){
+    person <- find_person(person)
+  }
+
+  glue::glue('<notify>{person}</notify>')
+}
+
+#' @title Notify a Person
+#' @description Create a notification node for a message object
+#' @param post post containing message to append notification to
+#' @param person Name or ID of a person in Basecamp
+#' @return character
+#' @details DETAILS
+#' @rdname notify_person
+#' @export
+#' @importFrom xml2 read_xml
+notify_person <- function(post, person){
+
+  xml2::xml_add_child(post,xml2::read_xml(create_notify(person)))
+
+}
+

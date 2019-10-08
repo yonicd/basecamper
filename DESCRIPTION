@@ -1,7 +1,7 @@
 Package: basecamper
 Type: Package
 Title: Basecamp Classic API
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: person(given = "Jonathan", family = "Sidi", role = c("cre","aut"), email =
           "yonis@metrumrg.com")
 Description: Work with Basecamp Classic API to query projects and attachments in Basecamp.

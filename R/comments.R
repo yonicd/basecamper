@@ -2,33 +2,6 @@
 #' @importFrom httr GET authenticate stop_for_status headers
 #' @rdname get_api
 #' @export
-create_message <- function(id = NULL,
-                           host = Sys.getenv('BASECAMP_HOST'),
-                           token = Sys.getenv('BASECAMP_TOKEN')){
-
-  if(is.null(id)) stop('argument id must contain a project id')
-
-  res <- httr::GET(
-    glue::glue('{host}/projects/{id}/posts/new.xml'),
-    httr::authenticate(token, 'X')
-  )
-
-  httr::stop_for_status(res)
-
-  res_xml <- httr::content(res)
-
-  POST_URL <- glue::glue(
-    "{host}","{gsub('^POST ','',httr::headers(res)[['x-create-action']])}"
-  )
-
-  structure(res_xml, POST_URL = POST_URL)
-
-}
-
-#' @importFrom glue glue
-#' @importFrom httr GET authenticate stop_for_status headers
-#' @rdname get_api
-#' @export
 create_comment <- function(
   scope = c('posts', 'milestones', 'todo_items'),
   id = NULL,
@@ -163,18 +136,23 @@ delete_comment <- function(
 
   httr::stop_for_status(res)
 
+  res
 }
 
 #' @importFrom httr POST authenticate content_type_xml
 post_comment <- function(comment,
                          token = Sys.getenv('BASECAMP_TOKEN')){
 
-  httr::POST(
+  res <- httr::POST(
     url  = attr(comment,"POST_URL"),
     body = comment,
     httr::authenticate(token, 'X'),
     httr::content_type_xml()
   )
+
+  httr::stop_for_status(res)
+
+  res
 
 }
 

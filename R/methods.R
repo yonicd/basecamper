@@ -66,6 +66,24 @@ print.basecamp_person_company <- function(x,...){
 }
 
 #' @export
+#' @importFrom xml2 xml_child
+#' @importFrom glue glue
+print.basecamp_person_people <- function(x,...){
+
+  for( i in seq_len(xml2::xml_length(x)) ){
+
+    print(
+      structure(
+        xml2::xml_child(x,glue::glue('.//person[{i}]')),
+        class = c(glue::glue("basecamp_person"),"xml_document","xml_node")
+      )
+    )
+
+  }
+
+}
+
+#' @export
 #' @importFrom xml2 xml_text xml_find_all
 #' @importFrom glue glue
 print.basecamp_person <- function(x,...){
@@ -225,8 +243,8 @@ summary.basecamp_attachments <- function(object,...){
 }
 
 #' @export
+#' @importFrom xml2 xml_find_all xml_text
 #' @importFrom tibble tibble
-#' @importFrom xml2 xml_text xml_find_all
 summary.basecamp_projects <- function(object,...){
 
   tibble::tibble(
@@ -238,8 +256,8 @@ summary.basecamp_projects <- function(object,...){
 }
 
 #' @export
-#' @importFrom xml2 xml_child
-#' @importFrom glue glue
+#' @importFrom xml2 xml_find_all xml_text
+#' @importFrom tibble tibble
 summary.basecamp_companies <- function(object,...){
 
   tibble::tibble(
@@ -251,8 +269,8 @@ summary.basecamp_companies <- function(object,...){
 }
 
 #' @export
-#' @importFrom xml2 xml_child
-#' @importFrom glue glue
+#' @importFrom xml2 xml_find_all xml_text
+#' @importFrom tibble tibble
 summary.basecamp_category_project <- function(object,...){
 
   tibble::tibble(
@@ -261,5 +279,19 @@ summary.basecamp_category_project <- function(object,...){
     name    = xml2::xml_text(xml2::xml_find_all(object,'./category/name')),
     type    = xml2::xml_text(xml2::xml_find_all(object,'./category/type')),
   )
+
+}
+
+#' @export
+#' @importFrom xml2 xml_find_all xml_text
+#' @importFrom tibble tibble
+#' @importFrom glue glue
+summary.basecamp_person_people <- function(object,...){
+
+  first_name = xml2::xml_text(xml2::xml_find_all(object,'./person/first-name'))
+  last_name  = xml2::xml_text(xml2::xml_find_all(object,'./person/last-name'))
+  id         = xml2::xml_double(xml2::xml_find_all(object,'./person/id'))
+
+  tibble::tibble(name = glue::glue('{first_name} {last_name}'), id = id)
 
 }
