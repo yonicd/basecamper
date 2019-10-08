@@ -13,80 +13,31 @@ print.basecamp_account <- function(x,...){
 }
 
 #' @export
-print.basecamp_person_me <- function(x,...){
-
- class(x)[1] <- 'basecamp_person'
- print(x)
-
-}
-
-#' @export
-print.basecamp_person_person <- function(x,...){
-
-  class(x)[1] <- 'basecamp_person'
-  print(x)
-
-}
-
-#' @export
 #' @importFrom xml2 xml_child
-#' @importFrom glue glue
-print.basecamp_person_project <- function(x,...){
-
-  for( i in seq_len(xml2::xml_length(x)) ){
-
-    print(
-      structure(
-      xml2::xml_child(x,glue::glue('.//person[{i}]')),
-      class = c("basecamp_person","xml_document","xml_node")
-    )
-    )
-
-  }
-
-}
-
-
-#' @export
-#' @importFrom xml2 xml_child
-#' @importFrom glue glue
-print.basecamp_person_company <- function(x,...){
-
-  for( i in seq_len(xml2::xml_length(x)) ){
-
-    print(
-      structure(
-        xml2::xml_child(x,glue::glue('.//person[{i}]')),
-        class = c(glue::glue("basecamp_person"),"xml_document","xml_node")
-      )
-    )
-
-  }
-
-}
-
-#' @export
-#' @importFrom xml2 xml_child
-#' @importFrom glue glue
-print.basecamp_person_people <- function(x,...){
-
-  for( i in seq_len(xml2::xml_length(x)) ){
-
-    print(
-      structure(
-        xml2::xml_child(x,glue::glue('.//person[{i}]')),
-        class = c(glue::glue("basecamp_person"),"xml_document","xml_node")
-      )
-    )
-
-  }
-
-}
-
-#' @export
-#' @importFrom xml2 xml_text xml_find_all
 #' @importFrom glue glue
 print.basecamp_person <- function(x,...){
+
+  if(is.na(xml2::xml_child(x,'.//child'))){
+
+    print_basecamp_person(x)
+
+  }else{
+
+    for( i in seq_len(xml2::xml_length(x)) ){
+
+      print_basecamp_person(xml2::xml_child(x,glue::glue('.//person[{i}]')))
+
+    }
+
+  }
+
+
+
+}
+
+#' @importFrom xml2 xml_text xml_find_all
+#' @importFrom glue glue
+print_basecamp_person <- function(x,...){
 
   person_id <- xml2::xml_text(xml2::xml_child(x,'.//id'))
   person_title <- xml2::xml_text(xml2::xml_child(x,'.//title'))
@@ -283,14 +234,19 @@ summary.basecamp_category_project <- function(object,...){
 }
 
 #' @export
-#' @importFrom xml2 xml_find_all xml_text
+#' @importFrom xml2 xml_find_all xml_text xml_double xml_child
 #' @importFrom tibble tibble
 #' @importFrom glue glue
-summary.basecamp_person_people <- function(object,...){
+summary.basecamp_person <- function(object,...){
 
-  first_name = xml2::xml_text(xml2::xml_find_all(object,'./person/first-name'))
-  last_name  = xml2::xml_text(xml2::xml_find_all(object,'./person/last-name'))
-  id         = xml2::xml_double(xml2::xml_find_all(object,'./person/id'))
+  root <- 'person'
+
+  if(is.na(xml2::xml_child(object,glue::glue('.//{root}')))) root <- ''
+
+  first_name = xml2::xml_text(xml2::xml_find_all(object,glue::glue('./{root}/first-name')))
+  last_name  = xml2::xml_text(xml2::xml_find_all(object,glue::glue('./{root}/last-name')))
+  id         = xml2::xml_double(xml2::xml_find_all(object,glue::glue('./{root}/id')))
+
 
   tibble::tibble(name = glue::glue('{first_name} {last_name}'), id = id)
 
