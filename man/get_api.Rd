@@ -44,7 +44,7 @@ create_comment(scope = c("posts", "milestones", "todo_items"),
   id = NULL, host = Sys.getenv("BASECAMP_HOST"),
   token = Sys.getenv("BASECAMP_TOKEN"))
 
-edit_comment(host = Sys.getenv("BASECAMP_HOST"),
+edit_comment(id, host = Sys.getenv("BASECAMP_HOST"),
   token = Sys.getenv("BASECAMP_TOKEN"))
 
 delete_comment(id = NULL, host = Sys.getenv("BASECAMP_HOST"),
@@ -63,6 +63,8 @@ basecamp_people(scope = c("person", "project", "company", "me",
 \item{token}{character, Basecamp Classic API token , Default: Sys.getenv("BASECAMP_TOKEN")}
 
 \item{id}{character, id relevant to the query}
+
+\item{scope}{character, scope of the request}
 }
 \value{
 xml_document
@@ -71,7 +73,7 @@ xml_document
 Query companies, people, projects, and attachments visible to the requesting user
 }
 \details{
-A host url is from the following template: https://\{teamname\}.basecamphq.com
+A host url is from the following template: https://{teamname}.basecamphq.com
 }
 \examples{
 \dontrun{

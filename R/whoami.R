@@ -6,5 +6,15 @@
 #' @export
 whoami <- function(host = Sys.getenv('BASECAMP_HOST'),
                    token = Sys.getenv('BASECAMP_TOKEN')){
-  basecamp_people('me',host = host,token = token)
+
+
+  if(!exists('me',envir = benv)){
+
+    res <- basecamp_people('me',host = host,token = token)
+    assign(x = 'me',res,envir = benv)
+
+  }
+
+  get('me',envir = benv)
+
 }

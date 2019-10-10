@@ -7,9 +7,9 @@
 view_messages(file, viewer = getOption("viewer"))
 }
 \arguments{
-\item{x}{View Message in Viewer}
+\item{file}{path to file to view}
 
-\item{head}{PARAM_DESCRIPTION, Default: 1}
+\item{viewer}{PARAM_DESCRIPTION, Default: getOption("viewer")}
 }
 \value{
 OUTPUT_DESCRIPTION

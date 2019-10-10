@@ -42,6 +42,7 @@ basecamp_people <- function(
 #' @title Find a person
 #' @description Find a person in Basecamp
 #' @param ... character, patterns to search for
+#' @param scope character, scope of the request
 #' @param id character, id relevant to the query
 #' @param host character, URL of the team, Default: Sys.getenv('BASECAMP_HOST')
 #' @param token character, Basecamp Classic API token , Default: Sys.getenv("BASECAMP_TOKEN")
@@ -75,4 +76,11 @@ find_person <- function(..., scope = 'people', id = NULL,
   names(ret) <- x$name[idx]
 
   ret
+
+}
+
+whoarewe <- function(person){
+
+  summary(whoami())[['company']]
+
 }

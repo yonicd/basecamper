@@ -1,16 +1,16 @@
 Package: basecamper
 Type: Package
 Title: Basecamp Classic API
-Version: 0.1.2
-Authors@R: person(given = "Jonathan", family = "Sidi", role = c("cre","aut"), email =
-          "yonis@metrumrg.com")
-Description: Work with Basecamp Classic API to query projects and attachments in Basecamp.
-  Additional download files from basecamp and unzip large files with package utilities.
+Version: 0.1.3
+Authors@R: person(given = "Jonathan", family = "Sidi", role = c("cre","aut"), email = "yonis@metrumrg.com")
+Description: Work with Basecamp Classic API to query projects and attachments in Basecamp. Additional download files from basecamp and unzip
+                large files with package utilities.
 Depends: R (>= 3.5.0)
-Imports: xml2,glue,utils,tibble,fs, httr, magrittr
+Imports: glue,httr,xml2,utils,tibble,fs, magrittr
 URL: https://ghe.metrumrg.com/yoni/basecamper
 BugReports: https://ghe.metrumrg.com/yoni/basecamper/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
+Roxygen: list(markdown = TRUE)

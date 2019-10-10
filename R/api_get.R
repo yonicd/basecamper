@@ -1,6 +1,7 @@
 #' @title Basecamp Classic GET API wrappers
 #' @description Query companies, people, projects, and attachments visible to the requesting user
 #' @param id character, id relevant to the query
+#' @param scope character, scope of the request
 #' @param host character, URL of the team, Default: Sys.getenv('BASECAMP_HOST')
 #' @param token character, Basecamp Classic API token , Default: Sys.getenv("BASECAMP_TOKEN")
 #' @return xml_document

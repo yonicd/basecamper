@@ -32,6 +32,7 @@ create_comment <- function(
 #' @rdname get_api
 #' @export
 edit_comment <- function(
+  id,
   host = Sys.getenv('BASECAMP_HOST'),
   token = Sys.getenv('BASECAMP_TOKEN')){
 
@@ -75,7 +76,23 @@ edit_attr <- function(object,field,val){
 #' @description Edit post object fields
 #' @param object post object
 #' @param value new value to replace with
-#' @return post object
+#' @details
+#'  When editing the body basecamp is expecting HTML.
+#'
+#'  To make it simpler to write you can write a simple markdown text and
+#'  then convert it to html using [markdownToHTML][markdown::markdownToHTML] :
+#'
+#' ```
+#'  html_text <- markdown::markdownToHTML(text = md_text,fragment.only = TRUE)
+#' ```
+#'  x will contain the html equivalent of value you can pass into [edit_body][basecamper::edit_body]
+#'
+#' ```
+#'  new_message%>%
+#'    edit_body(html_text)
+#' ```
+#'
+#' @return updated post object
 #' @rdname edit_post
 #' @export
 edit_title <- function(object, value){
@@ -108,15 +125,6 @@ edit_milestone_id <- function(object, value){
 
 }
 
-#' @export
-#' @rdname edit_post
-edit_privacy <- function(object, value){
-
-  edit_attr(object,'private',value)
-
-}
-
-
 #' @importFrom glue glue
 #' @importFrom httr DELETE authenticate stop_for_status
 #' @rdname get_api
@@ -139,15 +147,23 @@ delete_comment <- function(
   res
 }
 
-#' @importFrom httr POST authenticate content_type_xml
+
+#' @title Post a comment
+#' @description Post a comment to a Basecamp thread
+#' @param comment object created by [new_comment][basecamper::create_comment]
+#' @param token character, Basecamp Classic API token , Default: Sys.getenv("BASECAMP_TOKEN")
+#' @return [response][httr::response]
+#' @rdname post_comment
+#' @export
+#' @importFrom httr POST authenticate content_type stop_for_status
 post_comment <- function(comment,
                          token = Sys.getenv('BASECAMP_TOKEN')){
 
   res <- httr::POST(
     url  = attr(comment,"POST_URL"),
-    body = comment,
+    body = as.character(comment),
     httr::authenticate(token, 'X'),
-    httr::content_type_xml()
+    httr::content_type("text/xml")
   )
 
   httr::stop_for_status(res)

@@ -246,8 +246,21 @@ summary.basecamp_person <- function(object,...){
   first_name = xml2::xml_text(xml2::xml_find_all(object,glue::glue('./{root}/first-name')))
   last_name  = xml2::xml_text(xml2::xml_find_all(object,glue::glue('./{root}/last-name')))
   id         = xml2::xml_double(xml2::xml_find_all(object,glue::glue('./{root}/id')))
+  company    = xml2::xml_double(xml2::xml_find_all(object,glue::glue('./{root}/company-id')))
 
 
-  tibble::tibble(name = glue::glue('{first_name} {last_name}'), id = id)
+  tibble::tibble(name = glue::glue('{first_name} {last_name}'), id = id, company = company)
+
+}
+
+#' @export
+#' @importFrom xml2 xml_find_all xml_text xml_double
+#' @importFrom tibble tibble
+summary.basecamp_message_project <- function(object,...){
+
+  tibble::tibble(
+    title = object%>%xml2::xml_find_all('.//post/title')%>%xml2::xml_text(),
+    id = object%>%xml2::xml_find_all('.//post/id')%>%xml2::xml_double()
+  )
 
 }

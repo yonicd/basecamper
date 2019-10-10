@@ -27,10 +27,35 @@ create_message <- function(id = NULL,
 
 }
 
+#' @title Post a message
+#' @description Post a message to Basecamp
+#' @param message object created by [new_message][basecamper::create_message]
+#' @param token character, Basecamp Classic API token , Default: Sys.getenv("BASECAMP_TOKEN")
+#' @return [response][httr::response]
+#' @rdname post_message
+#' @export
+#' @importFrom httr POST authenticate content_type stop_for_status
+post_message <- function(message,
+                         token = Sys.getenv('BASECAMP_TOKEN')){
+
+  res <- httr::POST(
+    url  = attr(message,"POST_URL"),
+    body = as.character(message),
+    httr::authenticate(token, 'X'),
+    httr::content_type("text/xml")
+  )
+
+  httr::stop_for_status(res)
+
+  res
+
+}
+
+
 #' @title View Messages
 #' @description FUNCTION_DESCRIPTION
-#' @param x View Message in Viewer
-#' @param head PARAM_DESCRIPTION, Default: 1
+#' @param file path to file to view
+#' @param viewer PARAM_DESCRIPTION, Default: getOption("viewer")
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples
@@ -118,5 +143,14 @@ message_to_html <- function(x,head = 1, file = ''){
   }
 
   structure(file,class = c('basecamp_message','character'))
+
+}
+
+
+#' @export
+#' @rdname edit_post
+private_message <- function(object, value){
+
+  edit_attr(object,'private',value)
 
 }

@@ -13,7 +13,7 @@ unzip2(directory, file)
 }
 \description{
 CLI call to unzip that is more robust for large files, which
-  are truncated by \code{\link[utils]{unzip}} if larger than 4gb.
+are truncated by \code{\link[utils]{unzip}} if larger than 4gb.
 }
 \seealso{
 \code{\link[utils]{unzip}}

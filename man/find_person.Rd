@@ -11,6 +11,8 @@ find_person(..., scope = "people", id = NULL,
 \arguments{
 \item{...}{character, patterns to search for}
 
+\item{scope}{character, scope of the request}
+
 \item{id}{character, id relevant to the query}
 
 \item{host}{character, URL of the team, Default: Sys.getenv('BASECAMP_HOST')}
@@ -25,5 +27,5 @@ Find a person in Basecamp
 }
 \details{
 If the index of people is not loaded in the package yet, it will be
- queried and stored in an internal package environment.
+queried and stored in an internal package environment.
 }
