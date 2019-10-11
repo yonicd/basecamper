@@ -97,14 +97,18 @@ view_messages <- function(file, viewer = getOption("viewer")){
 #' @export
 #' @importFrom xml2 xml_length xml_child xml_text xml_double
 #' @importFrom glue glue
-message_to_html <- function(x,head = 1, file = ''){
+message_to_html <- function(x,index = 1, file = ''){
 
   if(!nzchar(file))
     file <- tempfile(fileext = '.html')
 
-  for(i in seq_len(pmin(head,xml2::xml_length(x)))){
+  msg_vec <- rev(seq_len(xml2::xml_length(x)))
 
-    message_object <- xml2::xml_child(x,glue::glue('.//post[{i}]'))
+  index <- msg_vec[index[index <= xml2::xml_length(x)]]
+
+  for(i in seq_along(index)){
+
+    message_object <- xml2::xml_child(x,glue::glue('.//post[{index[i]}]'))
 
     message_id <- xml2::xml_text(xml2::xml_child(message_object,'.//id'))
 
@@ -149,8 +153,16 @@ message_to_html <- function(x,head = 1, file = ''){
 
 #' @export
 #' @rdname edit_post
-private_message <- function(object, value){
+private_message <- function(object){
 
-  edit_attr(object,'private',value)
+  edit_attr(object,'private',TRUE)
+
+}
+
+#' @export
+#' @rdname edit_post
+public_message <- function(object){
+
+  edit_attr(object,'private',FALSE)
 
 }

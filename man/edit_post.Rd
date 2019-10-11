@@ -6,6 +6,7 @@
 \alias{edit_category_id}
 \alias{edit_milestone_id}
 \alias{private_message}
+\alias{public_message}
 \title{Edit a Basecamp Post}
 \usage{
 edit_title(object, value)
@@ -16,7 +17,9 @@ edit_category_id(object, value)
 
 edit_milestone_id(object, value)
 
-private_message(object, value)
+private_message(object)
+
+public_message(object)
 }
 \arguments{
 \item{object}{post object}

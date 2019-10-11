@@ -4,14 +4,14 @@
 \alias{message_to_html}
 \title{FUNCTION_TITLE}
 \usage{
-message_to_html(x, head = 1, file = "")
+message_to_html(x, index = 1, file = "")
 }
 \arguments{
 \item{x}{PARAM_DESCRIPTION}
 
-\item{head}{PARAM_DESCRIPTION, Default: 1}
-
 \item{file}{PARAM_DESCRIPTION, Default: ''}
+
+\item{head}{PARAM_DESCRIPTION, Default: 1}
 }
 \value{
 OUTPUT_DESCRIPTION

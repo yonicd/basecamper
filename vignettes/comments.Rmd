@@ -1,0 +1,145 @@
+---
+title: "Creating and Querying Comments"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Creating and Querying Comments}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(basecamper)
+```
+
+```{r}
+whoami()
+```
+
+
+```{r}
+projs <- basecamp_projects()
+```
+
+```{r}
+
+(projs_sum <- summary(projs))
+
+```
+ 
+```{r}
+(proj_id <- projs_sum$id[grepl('TAK0208F',projs_sum$name)])
+```
+ 
+```{r}
+
+proj_msgs <- basecamp_messages(scope = 'project',id = proj_id)
+
+```
+ 
+```{r}
+
+(proj_msgs_sum <- summary(proj_msgs))
+
+```
+ 
+```{r}
+
+(msg_id <- proj_msgs_sum$id[grepl('Project Log',proj_msgs_sum$title)])
+  
+```
+
+## View a message contents
+
+### Convert message from XML to an html file
+
+```{r}
+msg_file <- proj_msgs%>%
+  message_to_html(index = 1) # default a tempfile
+```
+
+```{r, results='asis'}
+cat(readLines(msg_file,warn = FALSE))
+```
+
+## Creating a Comment
+
+```{r,eval = FALSE}
+new_comment <- create_comment(scope = 'posts',id = msg_id)
+
+```
+
+### Write the body for the comment
+
+The body can be in two forms
+
+  - Regular text
+  - HTML
+    - You can write in Markdown and convert it to HTML
+    - You can render a Rmarkdown with an `html_document` output to read in the content
+
+```{r}
+my_body <- 
+'What happened in the meeting
+
+1. We went over the 2.7.2 schedule and the following tables were highlighted
+
+  - Tables: 3.k, 3.m
+  - Figures: 3.d
+
+2. Clarification of SoW
+
+  - In the logistic regressions the relevant subjects are week 6 responders
+  - Missing baseline covariate values will be imputed by the population median
+
+3. Data assembly for response data in IV trial was discussed.
+
+  - Verified that the data we have in the archive is what they have internally
+
+4. Report structure
+
+  - After internal discussions they have decided that two reports are needed
+    - Submission: SC trial
+    - Publication: SC + IV trials
+
+5. Timelines
+
+  - Exposure simulations ETA 10/18
+  - Initial ER results 10/31
+
+'
+
+```
+ 
+### Convert to HTML 
+```{r}
+my_body_html <- markdown::markdownToHTML(text = my_body,fragment.only = TRUE)
+```
+
+<details> 
+<summary>HTML output (Click to open)</summary>
+```{r,echo=FALSE,results='asis'}
+cat(my_body_html)
+```
+</details> 
+
+### Add the body to the new comment object
+
+```{r,eval=FALSE}
+new_comment%>%
+  edit_body(my_body_html)
+
+```
+ 
+## Send the Comment to the Message Thread
+ 
+```{r,eval=FALSE}
+new_comment%>%
+  basecamper::post_comment()
+```
