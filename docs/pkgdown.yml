@@ -1,5 +1,8 @@
 pandoc: '2.7'
 pkgdown: 1.1.0.9000
 pkgdown_sha: ~
-articles: []
+articles:
+  attach: attach.html
+  comments: comments.html
+  projects: projects.html
 

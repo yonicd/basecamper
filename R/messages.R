@@ -74,13 +74,14 @@ view_messages <- function(file, viewer = getOption("viewer")){
 }
 
 
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param x PARAM_DESCRIPTION
-#' @param head PARAM_DESCRIPTION, Default: 1
-#' @param file PARAM_DESCRIPTION, Default: ''
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
+#' @title Convert message content to HTML
+#' @description Uses the message ID in the message object to query the comments
+#'   associated with it and
+#' @param message message object returned by [basecamper][basecamper::basecamp_message]
+#' @param index numeric, indicies of comments to query (1 is earliest), Default: 1
+#' @param file character, path to save the HTML output, Default: ''
+#' @return filepath to the html created
+#' @details if file is '' then a tmepfile will be written created and written to.
 #' @examples
 #' \dontrun{
 #' if(interactive()){
@@ -97,18 +98,18 @@ view_messages <- function(file, viewer = getOption("viewer")){
 #' @export
 #' @importFrom xml2 xml_length xml_child xml_text xml_double
 #' @importFrom glue glue
-message_to_html <- function(x,index = 1, file = ''){
+message_to_html <- function(message,index = 1, file = ''){
 
   if(!nzchar(file))
     file <- tempfile(fileext = '.html')
 
-  msg_vec <- rev(seq_len(xml2::xml_length(x)))
+  msg_vec <- rev(seq_len(xml2::xml_length(message)))
 
-  index <- msg_vec[index[index <= xml2::xml_length(x)]]
+  index <- msg_vec[index[index <= xml2::xml_length(message)]]
 
   for(i in seq_along(index)){
 
-    message_object <- xml2::xml_child(x,glue::glue('.//post[{index[i]}]'))
+    message_object <- xml2::xml_child(message,glue::glue('.//post[{index[i]}]'))
 
     message_id <- xml2::xml_text(xml2::xml_child(message_object,'.//id'))
 

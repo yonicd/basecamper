@@ -2,29 +2,26 @@
 % Please edit documentation in R/attachments.R
 \name{add_attachment}
 \alias{add_attachment}
-\title{FUNCTION_TITLE}
+\title{Add an attachment to a post}
 \usage{
 add_attachment(post, file, attachment_name = "My File",
   host = Sys.getenv("BASECAMP_HOST"),
   token = Sys.getenv("BASECAMP_TOKEN"))
 }
 \arguments{
-\item{post}{PARAM_DESCRIPTION}
+\item{post}{Post object to attach to (message or comment)}
 
-\item{file}{PARAM_DESCRIPTION}
+\item{file}{character, Path of file to attach}
 
-\item{attachment_name}{PARAM_DESCRIPTION, Default: 'My File'}
+\item{attachment_name}{character, Name of attachment seen in post, Default: 'My File'}
 
-\item{host}{PARAM_DESCRIPTION, Default: Sys.getenv("BASECAMP_HOST")}
+\item{host}{character, URL of the team, Default: Sys.getenv('BASECAMP_HOST')}
 
-\item{token}{PARAM_DESCRIPTION, Default: Sys.getenv("BASECAMP_TOKEN")}
+\item{token}{character, Basecamp Classic API token , Default: Sys.getenv("BASECAMP_TOKEN")}
 }
 \value{
-OUTPUT_DESCRIPTION
+Post with the attachment embedded in it.
 }
 \description{
-FUNCTION_DESCRIPTION
-}
-\details{
-DETAILS
+Add an attachment object to a post
 }

@@ -1,0 +1,66 @@
+---
+title: "Projects"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Projects}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(basecamper)
+```
+
+## Retrieve all Projects
+
+```{r}
+projects <- basecamper::basecamp_projects()
+```
+
+## Inspecting Projects
+
+### Print
+
+The print method for the `projects` object will return a character vector with the project name with the company associated with it as the element name.
+
+```{r}
+projects
+```
+
+### Summary
+
+Summary method for a `projects` object will return a `tibble` with `company` name associated with the project, with the `id` and `name` of the project.
+
+```{r}
+summary(projects)
+```
+
+## Retrieve all Projects
+
+Choose a project
+
+```{r}
+(METRUM <- summary(projects)[[2,'id']])
+```
+
+```{r}
+project <- basecamper::basecamp_project(METRUM)
+```
+
+## Inspecting a Project
+
+### Print
+
+Printing the `project` object will return basic meta information
+
+```{r}
+project
+```
+

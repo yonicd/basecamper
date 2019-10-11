@@ -1,0 +1,91 @@
+---
+title: "Attachments"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Attachments}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(basecamper)
+```
+
+## Attachments
+
+```{r}
+
+METRUM <- '8514810'
+
+attachments <- basecamper::basecamp_attachments(METRUM)
+```
+
+### Inspecting Attachments
+
+Print method for attachment object lists the names of the files attached in the project
+
+```{r}
+print(attachments)
+```
+
+Summary method for an attachment object returns a tibble with information about the files: filename, when it was created, file size and the url to download it (which is most important)
+
+```{r}
+summary(attachments)
+```
+
+## Downloading Attachments
+
+```{r}
+attach_summary <- summary(attachments)
+
+(file_url  <- attach_summary$url[3])
+
+td <- tempdir()
+
+basecamp_download(file_url,destdir = td)
+
+```
+
+### Downloaded file information
+
+```{r}
+list.files(td,pattern = '.zip$')
+
+fs::as_fs_bytes(file.info(list.files(td,pattern = '.zip$',full.names = TRUE))[,'size'])
+```
+
+## Unzip Archives
+
+`basecamper::unzip2` runs unzip from CLI which is more robust for files larger than `4gb` which are truncated by `utils::unzip`
+
+```{r}
+
+zipped_file <- list.files(td,pattern = '.zip$',full.names = TRUE)
+
+basecamper::unzip2(directory = td,file = zipped_file)
+```
+
+### Unzipped files information
+
+```{r}
+
+zip_dir <- tools::file_path_sans_ext(list.files(td,pattern = '.zip$',full.names = TRUE))
+
+unzipped_files <- fs::file_info(
+  list.files(zip_dir,full.names = TRUE)
+  )[,c('path','size')]
+
+# clean up the path for printing
+unzipped_files$path <- basename(unzipped_files$path)
+
+unzipped_files
+
+```

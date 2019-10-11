@@ -2,25 +2,26 @@
 % Please edit documentation in R/messages.R
 \name{message_to_html}
 \alias{message_to_html}
-\title{FUNCTION_TITLE}
+\title{Convert message content to HTML}
 \usage{
-message_to_html(x, index = 1, file = "")
+message_to_html(message, index = 1, file = "")
 }
 \arguments{
-\item{x}{PARAM_DESCRIPTION}
+\item{message}{message object returned by \link[basecamper:basecamp_message]{basecamper}}
 
-\item{file}{PARAM_DESCRIPTION, Default: ''}
+\item{index}{numeric, indicies of comments to query (1 is earliest), Default: 1}
 
-\item{head}{PARAM_DESCRIPTION, Default: 1}
+\item{file}{character, path to save the HTML output, Default: ''}
 }
 \value{
-OUTPUT_DESCRIPTION
+filepath to the html created
 }
 \description{
-FUNCTION_DESCRIPTION
+Uses the message ID in the message object to query the comments
+associated with it and
 }
 \details{
-DETAILS
+if file is '' then a tmepfile will be written created and written to.
 }
 \examples{
 \dontrun{

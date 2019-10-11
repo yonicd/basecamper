@@ -23,13 +23,13 @@ The goal of basecamper is to work with Basecamp Classic API to interact with Bas
 
 What you can do with this package:
 
-  - [Query](#queries)
-    - [Projects](#projects) you have privileges to
-    - [Project](#project) specific information
-    - [Attachments](#attachments) in a project
-  - [Download](#download-file) attached files in a project
-  - [Unzip](#unzip) large files (`>4gb`)
-  
+ |Scope|Query|Post|Edit|Delete|Download|Vignette|
+ |:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+ |Projects|`r emo::ji('check')`|||||`r emo::ji('check')`|
+ |Messages|`r emo::ji('check')`|`r emo::ji('check')`|`r emo::ji('check')`|`r emo::ji('check')`||
+ |Comments|`r emo::ji('check')`|`r emo::ji('check')`|`r emo::ji('check')`|`r emo::ji('check')`||`r emo::ji('check')`|
+ |Attachments|`r emo::ji('check')`|`r emo::ji('check')`|||`r emo::ji('check')`|`r emo::ji('check')`|
+ 
 ## Installation
 
 To use this package clone the repository and install locally
@@ -55,7 +55,6 @@ Sys.setenv(BASECAMP_TOKEN = 'MYTOKEN')
 Sys.setenv(BASECAMP_HOST  = 'https://metrumresearchgroup.basecamphq.com')
 ```
 
-## Queries
 
 ### Whoami
 
@@ -65,87 +64,3 @@ Lets just check that the token and host are set right and get back your account 
 basecamper::whoami()
 ```
 
-### Projects
-
-```{r}
-projects <- basecamper::basecamp_projects()
-```
-
-#### Projects methods
-
-```{r}
-print(projects)
-```
-
-```{r}
-summary(projects)
-```
-
-### Project
-
-```{r}
-(TAKEDA_IQVA <- summary(projects)[[19,'id']])
-project <- basecamper::basecamp_project(TAKEDA_IQVA)
-```
-
-#### Project methods
-
-```{r}
-print(project)
-```
-
-### Attachments
-
-```{r}
-attachments <- basecamper::basecamp_attachments(TAKEDA_IQVA)
-```
-
-#### Attachments methods
-
-```{r}
-print(attachments)
-```
-
-```{r}
-summary(attachments)
-```
-
-## Download File
-
-```{r}
-attach_summary <- summary(attachments)
-
-(file_url  <- attach_summary$url[attach_summary$filesize==min(attach_summary$filesize)])
-
-td <- tempdir()
-
-basecamp_download(file_url,destdir = td)
-
-list.files(td,pattern = '.zip$')
-
-fs::as_fs_bytes(file.info(list.files(td,pattern = '.zip$',full.names = TRUE))[,'size'])
-
-```
-
-## Unzip
-
-`basecamper::unzip2` runs unzip from CLI which is more robust for files larger than `4gb` which are truncated by `utils::unzip`
-
-```{r}
-
-basecamper::unzip2(directory = td,
-                   file = list.files(td,pattern = '.zip$',full.names = TRUE))
-```
-
-```{r}
-unzipped_files <- fs::file_info(list.files(td,
-    pattern = '.(pdf|xlsx)$',full.names = TRUE)
-    )[,c('path','size')]
-
-unzipped_files$path <- basename(unzipped_files$path)
-
-unzipped_files
-
-
-
-```

@@ -31,15 +31,14 @@ upload_attachment <- function(file,
   res
 }
 
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param post PARAM_DESCRIPTION
-#' @param file PARAM_DESCRIPTION
-#' @param attachment_name PARAM_DESCRIPTION, Default: 'My File'
-#' @param host PARAM_DESCRIPTION, Default: Sys.getenv("BASECAMP_HOST")
-#' @param token PARAM_DESCRIPTION, Default: Sys.getenv("BASECAMP_TOKEN")
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
+#' @title Add an attachment to a post
+#' @description Add an attachment object to a post
+#' @param post Post object to attach to (message or comment)
+#' @param file character, Path of file to attach
+#' @param attachment_name character, Name of attachment seen in post, Default: 'My File'
+#' @param host character, URL of the team, Default: Sys.getenv('BASECAMP_HOST')
+#' @param token character, Basecamp Classic API token , Default: Sys.getenv("BASECAMP_TOKEN")
+#' @return Post with the attachment embedded in it.
 #' @rdname add_attachment
 #' @export
 #' @importFrom xml2 xml_add_child read_xml
