@@ -10,7 +10,8 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  eval = FALSE
 )
 ```
 
@@ -22,9 +23,9 @@ library(basecamper)
 
 ```{r}
 
-METRUM <- '8514810'
+MYPROJECT <- '8514810'
 
-attachments <- basecamper::basecamp_attachments(METRUM)
+attachments <- basecamper::basecamp_attachments(MYPROJECT)
 ```
 
 ### Inspecting Attachments

@@ -10,7 +10,8 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  eval = FALSE
 )
 ```
 
@@ -51,7 +52,7 @@ Choose a project
 ```
 
 ```{r}
-project <- basecamper::basecamp_project(METRUM)
+project <- basecamper::basecamp_project('MYPROJECT')
 ```
 
 ## Inspecting a Project

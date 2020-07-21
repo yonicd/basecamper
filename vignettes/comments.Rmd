@@ -10,7 +10,8 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  eval = FALSE
 )
 ```
 
@@ -34,7 +35,7 @@ projs <- basecamp_projects()
 ```
  
 ```{r}
-(proj_id <- projs_sum$id[grepl('TAK0208F',projs_sum$name)])
+(proj_id <- projs_sum$id[grepl('MYPROJECT',projs_sum$name)])
 ```
  
 ```{r}
@@ -88,7 +89,7 @@ The body can be in two forms
 my_body <- 
 'What happened in the meeting
 
-1. We went over the 2.7.2 schedule and the following tables were highlighted
+1. We went over the schedule and the following tables were highlighted
 
   - Tables: 3.k, 3.m
   - Figures: 3.d
@@ -105,8 +106,8 @@ my_body <-
 4. Report structure
 
   - After internal discussions they have decided that two reports are needed
-    - Submission: SC trial
-    - Publication: SC + IV trials
+    - Submission: AB trial
+    - Publication: AB + CD trials
 
 5. Timelines
 
