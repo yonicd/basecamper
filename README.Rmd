@@ -9,7 +9,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%"
+  out.width = "100%",
+  eval = FALSE
 )
 ```
 
@@ -52,13 +53,13 @@ You can find your TOKEN by logging into Basecamp
 
 ```{r,eval=FALSE}
 Sys.setenv(BASECAMP_TOKEN = 'MYTOKEN')
-Sys.setenv(BASECAMP_HOST  = 'https://metrumresearchgroup.basecamphq.com')
+Sys.setenv(BASECAMP_HOST  = 'https://mycompany.basecamphq.com')
 ```
 
 
 ### Whoami
 
-Lets just check that the token and host are set right and get back your account info
+Checking that the token and host are set right and get back your account info with the `whoami` function
 
 ```{r}
 basecamper::whoami()

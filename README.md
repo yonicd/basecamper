@@ -47,17 +47,14 @@ You can find your TOKEN by logging into Basecamp
 
 ``` r
 Sys.setenv(BASECAMP_TOKEN = 'MYTOKEN')
-Sys.setenv(BASECAMP_HOST  = 'https://metrumresearchgroup.basecamphq.com')
+Sys.setenv(BASECAMP_HOST  = 'https://mycompany.basecamphq.com')
 ```
 
 ### Whoami
 
-Lets just check that the token and host are set right and get back your
-account info
+Checking that the token and host are set right and get back your account
+info with the `whoami` function
 
 ``` r
 basecamper::whoami()
-#> Yoni Sidi 
-#> User Name: yonis@metrumrg.com
-#> User ID: 12149241
 ```
